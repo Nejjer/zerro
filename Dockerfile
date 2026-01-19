@@ -17,4 +17,4 @@ RUN pnpm install
 COPY . ./
 
 # start app
-CMD ["pnpm", "run", "dev", "--", "--host"]
+CMD ["sh", "-c", "pnpm run build && pnpm run preview"]
