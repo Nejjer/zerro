@@ -8,6 +8,7 @@ import {
   ButtonOwnProps,
   Typography,
   ButtonBase,
+  TextField
 } from '@mui/material'
 import { useTranslation } from 'react-i18next'
 import { useAppTheme } from '6-shared/ui/theme'
@@ -16,6 +17,7 @@ import { Logo } from '6-shared/ui/Logo'
 
 import { useAppDispatch } from 'store'
 import { loadBackup, loadDemoData, logIn } from '4-features/authorization'
+import { setToken } from '../../store/token'
 
 zenmoney.processAuthCode()
 
@@ -23,6 +25,7 @@ export default function Auth() {
   const dispatch = useAppDispatch()
   const { t } = useTranslation()
   const theme = useAppTheme()
+  const [token, setToken] = useState<string | null>(null)
   const [logoIn, setLogoIn] = useState(false)
   const [isDragging, setIsDragging] = useState(false)
   setTimeout(() => setLogoIn(true), 300)
@@ -72,12 +75,13 @@ export default function Auth() {
         spacing={3}
         sx={{ justifyContent: 'center', alignItems: 'center' }}
       >
+        <TextField placeholder={'token'} value={token} onChange={e => {setToken(e.target.value)}} />
         <Fade in timeout={1000}>
           <Button
             variant="contained"
             color="primary"
             size="large"
-            onClick={() => dispatch(logIn('ru'))}
+            onClick={() => dispatch(logIn('ru', token))}
             children={t('btnLogin')}
           />
         </Fade>

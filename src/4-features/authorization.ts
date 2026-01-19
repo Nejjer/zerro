@@ -19,13 +19,16 @@ export const logOut = (): AppThunk => (dispatch, getState) => {
 }
 
 export const logIn =
-  (endpoint: EndpointPreference): AppThunk =>
+  (endpoint: EndpointPreference, defaultToken?: string | null): AppThunk =>
   async (dispatch, getState) => {
     // Clear all data before logging in
     dispatch(logOut())
 
     // Get token
-    const token = await zenmoney.authorize(endpoint)
+    let token = defaultToken;
+    if (!token) {
+      token = await zenmoney.authorize(endpoint)
+    }
     if (!token) return
 
     // Save token and endpoint preference
